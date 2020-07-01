@@ -3,7 +3,7 @@ class Foo:
         print('function 1!!')
     
     def func2(self):
-        print(id(f))
+        print(id(self))
         print('function 2!!')
 
 f = Foo()
