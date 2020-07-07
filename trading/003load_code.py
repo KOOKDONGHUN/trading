@@ -10,5 +10,6 @@ kospi = {}
 for code in codeList:
     name = instCpCodeMgr.CodeToName(code)
     kospi[code] = name
+    print(name)
 
-print(kospi)
+# print(kospi)
