@@ -26,7 +26,7 @@ train_data.drop_duplicates(subset=['document'], inplace=True)
 
 print('총 샘플의 수 : ', len(train_data)) # 총 샘플의 수 :  146183
 
-train_data['label'].value_counts().plot(kind='bar') # 긍정과 부정의 샘플의 갯수가 비슷함
+# train_data['label'].value_counts().plot(kind='bar') # 긍정과 부정의 샘플의 갯수가 비슷함
 # plt.show()
 
 # 결측치 확인
@@ -49,3 +49,13 @@ print(train_data[:5])
 ## 한글이 없는 리뷰 였다면 null이 되기때문에 확인해야함
 train_data['document'].replace('', np.nan, inplace=True)
 print(train_data.isnull().sum()) # 391개 발견
+
+print(train_data.loc[train_data.document.isnull()][:5]) # null값이 있는 5행 출력
+train_data = train_data.dropna(how='any')
+print(len(train_data))
+
+# train_data['label'].value_counts().plot(kind='bar') # 긍정과 부정의 샘플의 갯수가 비슷함
+# plt.show()
+# 여기서 데이터의 개수의 차이가 생김 200~300개 정도 차이남
+
+test_data.drop_duplicates(subset=['document'], inplace=True)
