@@ -3,3 +3,7 @@
 *.hdf5
 *.npy
 *.txt
+*.json
+
+.vscode/
+__ptcache__/

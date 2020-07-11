@@ -29,7 +29,7 @@ print('총 샘플의 수 : ', len(train_data)) # 총 샘플의 수 :  146183
 # train_data['label'].value_counts().plot(kind='bar') # 긍정과 부정의 샘플의 갯수가 비슷함
 # plt.show()
 
-# 결측치 확인
+#### 결측치 확인
 print(train_data.isnull().values.any()) # True 결측치 존재
 
 print(train_data.isnull().sum()) # 어떤 열에 결측치가 존재하는지 확인 document열에서 확인됨
@@ -53,9 +53,31 @@ print(train_data.isnull().sum()) # 391개 발견
 print(train_data.loc[train_data.document.isnull()][:5]) # null값이 있는 5행 출력
 train_data = train_data.dropna(how='any')
 print(len(train_data))
+print("최종 null 확인 ",train_data.isnull().sum()) # 
+
 
 # train_data['label'].value_counts().plot(kind='bar') # 긍정과 부정의 샘플의 갯수가 비슷함
 # plt.show()
 # 여기서 데이터의 개수의 차이가 생김 200~300개 정도 차이남
 
 test_data.drop_duplicates(subset=['document'], inplace=True)
+test_data['document'] = test_data['document'].str.replace("[^ㄱ-ㅎ ㅏ-ㅣ 가-힣 ]","")
+test_data['document'].replace('', np.nan, inplace=True)
+test_data = test_data.dropna(how='any')
+print("최종 null 확인 ",test_data.isnull().sum()) # 
+
+
+#### Tokenize use konlpy
+stopwords = ['의', '가', '이', '은', '들', '는', '좀', '잘', '걍', '과', '도', '를', '으로', '자', '에', '와', '한', '하다']
+
+okt = Okt()
+okt.morphs('와 이런 것도 영화라고 차라리 뮤직비디오를 만드는 게 나을 뻔', stem=True)
+
+x_train = []
+for sentence in train_data['document']:
+    temp_x = []
+    temp_x = okt.morphs(sentence, stem=True) # Tokenize
+    temp_x = [word for word in temp_x if not word in stopwords] # 불용어 제거
+    x_train.append(temp_x)
+
+print(x_train[:3])
