@@ -8,11 +8,11 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 import numpy as np
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-# urllib.request.urlretrieve("https://raw.githubusercontent.com/e9t/nsmc/master/ratings_train.txt", filename="ratings_train.txt")
-# urllib.request.urlretrieve("https://raw.githubusercontent.com/e9t/nsmc/master/ratings_test.txt", filename="ratings_test.txt")
+# urllib.request.urlretrieve("https://raw.githubusercontent.com/e9t/nsmc/master/ratings_train.txt", filename="./data/ratings_train.txt")
+# urllib.request.urlretrieve("https://raw.githubusercontent.com/e9t/nsmc/master/ratings_test.txt", filename="./data/ratings_test.txt")
 
-train_data = pd.read_table('ratings_train.txt')
-test_data = pd.read_table('ratings_test.txt')
+train_data = pd.read_table('./data/ratings_train.txt')
+test_data = pd.read_table('./data/ratings_test.txt')
 
 # print('훈련용 리뷰 개수 : ', len(train_data)) # 15000
 

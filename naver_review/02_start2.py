@@ -4,15 +4,15 @@ import matplotlib.pyplot as plt
 
 import re
 from konlpy.tag import Okt
-from tensorflow.keras.preprocessing.text import Tokenizer
+from keras.preprocessing.text import Tokenizer
 import numpy as np
-from tensorflow.keras.preprocessing.sequence import pad_sequences
+from keras.preprocessing.sequence import pad_sequences
 
-# urllib.request.urlretrieve("https://raw.githubusercontent.com/e9t/nsmc/master/ratings_train.txt", filename="ratings_train.txt")
-# urllib.request.urlretrieve("https://raw.githubusercontent.com/e9t/nsmc/master/ratings_test.txt", filename="ratings_test.txt")
+# urllib.request.urlretrieve("https://raw.githubusercontent.com/e9t/nsmc/master/ratings_train.txt", filename="./data/ratings_train.txt")
+# urllib.request.urlretrieve("https://raw.githubusercontent.com/e9t/nsmc/master/ratings_test.txt", filename="./data/ratings_test.txt")
 
-train_data = pd.read_table('ratings_train.txt')
-test_data = pd.read_table('ratings_test.txt')
+train_data = pd.read_table('./data/ratings_train.txt')
+test_data = pd.read_table('./data/ratings_test.txt')
 
 train_data.drop_duplicates(subset=['document'], inplace=True)
 
@@ -51,12 +51,12 @@ for idx, sentence in enumerate(train_data['document']):
 # print(x_train[-1])
 # print(len(x_train))
 
-x_pred = []
+x_test = []
 for idx, sentence in enumerate(test_data['document']):
     temp_x = []
     temp_x = okt.morphs(sentence, stem=True)
     temp_x = [word for word in temp_x if not word in stopwords]
-    x_pred.append(temp_x)
+    x_test.append(temp_x)
     print(idx,'test 진행중')
 
 
@@ -87,7 +87,7 @@ print(vocab_size) # 19417
 tokenizer = Tokenizer(vocab_size, oov_token='OOV')
 tokenizer.fit_on_texts(x_train)
 x_train = tokenizer.texts_to_sequences(x_train)
-x_pred = tokenizer.texts_to_sequences(x_pred)
+x_test = tokenizer.texts_to_sequences(x_test)
 
 print(x_train[:3])
 
@@ -104,8 +104,9 @@ print(len(x_train))
 print(len(y_train))
 
 x_train = pad_sequences(x_train, maxlen=30)
-x_pred = pad_sequences(x_pred, maxlen=30)
+x_test = pad_sequences(x_test, maxlen=30)
 
 np.save('./data/naver_review_x_train.npy',arr=x_train)
 np.save('./data/naver_review_y_train.npy',arr=y_train)
-np.save('./data/naver_review_x_pred.npy',arr=x_pred)
+np.save('./data/naver_review_x_test.npy',arr=x_test)
+np.save('./data/naver_review_y_test.npy',arr=y_test)
